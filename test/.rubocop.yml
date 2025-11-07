@@ -1,0 +1,17 @@
+# RuboCop configuration for test fixtures
+#
+# This file is ONLY for testing the MCP server functionality.
+# The MCP server itself is a Node.js/TypeScript project.
+#
+# This config is used to lint test_example.rb when testing that
+# the MCP server correctly runs RuboCop and reports violations.
+#
+# For your Rails projects, see ../examples/rails-rubocop.yml
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  TargetRubyVersion: 3.2
+
+plugins:
+  - rubocop-rails

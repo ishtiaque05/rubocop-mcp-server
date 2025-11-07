@@ -1,0 +1,33 @@
+{
+  "name": "rubocop-mcp-server",
+  "version": "0.1.0",
+  "description": "MCP server for RuboCop Rails linting",
+  "type": "module",
+  "bin": {
+    "rubocop-mcp-server": "./build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "yarn build",
+    "watch": "tsc --watch",
+    "dev": "node --watch build/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "rubocop",
+    "rails",
+    "linting"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "rubocop": {
+      "command": "node",
+      "args": ["/absolute/path/to/rubocop-mcp/build/index.js"]
+    }
+  }
+}
