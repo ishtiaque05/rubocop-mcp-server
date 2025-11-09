@@ -103,6 +103,27 @@ Add to your Claude Desktop config file:
 }
 ```
 
+Restart Claude Desktop after saving the configuration.
+
+### With Cursor
+
+Add to Cursor's MCP settings:
+
+```json
+{
+  "mcpServers": {
+    "rubocop": {
+      "command": "node",
+      "args": ["/absolute/path/to/rubocop-mcp/build/index.js"]
+    }
+  }
+}
+```
+
+**Important**: Use the full absolute path. The `~` shorthand may not work in Cursor, so expand it to your actual home directory (e.g., `/home/username/.local/share/mcp-servers/rubocop/build/index.js`).
+
+Restart Cursor after adding the configuration.
+
 See `examples/` directory for sample configurations.
 
 ## Example Usage with Claude

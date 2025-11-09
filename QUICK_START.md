@@ -24,7 +24,9 @@ yarn install
 yarn build
 ```
 
-## 3. Add to Claude CLI
+## 3. Add to Your AI Assistant
+
+### Option A: Claude CLI
 
 ```bash
 claude mcp add --transport stdio rubocop -- node ~/.local/share/mcp-servers/rubocop/build/index.js
@@ -34,6 +36,42 @@ Verify:
 ```bash
 claude mcp list
 ```
+
+### Option B: Cursor
+
+Add to Cursor's MCP settings:
+
+```json
+{
+  "mcpServers": {
+    "rubocop": {
+      "command": "node",
+      "args": ["~/.local/share/mcp-servers/rubocop/build/index.js"]
+    }
+  }
+}
+```
+
+**Note**: Use the absolute path (expand `~` to your home directory, e.g., `/home/username/.local/share/mcp-servers/rubocop/build/index.js`)
+
+Restart Cursor after adding the configuration.
+
+### Option C: Claude Desktop
+
+Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `~/.config/Claude/claude_desktop_config.json` (Linux):
+
+```json
+{
+  "mcpServers": {
+    "rubocop": {
+      "command": "node",
+      "args": ["/absolute/path/to/.local/share/mcp-servers/rubocop/build/index.js"]
+    }
+  }
+}
+```
+
+Restart Claude Desktop after adding the configuration.
 
 ## 4. Configure Your Rails Project
 
