@@ -33,6 +33,7 @@ claude mcp add --transport stdio rubocop -- node ~/.local/share/mcp-servers/rubo
 ```
 
 Verify:
+
 ```bash
 claude mcp list
 ```
@@ -76,6 +77,7 @@ Restart Claude Desktop after adding the configuration.
 ## 4. Configure Your Rails Project
 
 Add to `Gemfile`:
+
 ```ruby
 group :development do
   gem 'rubocop', require: false
@@ -84,11 +86,13 @@ end
 ```
 
 Install:
+
 ```bash
 bundle install
 ```
 
 Create `.rubocop.yml`:
+
 ```yaml
 AllCops:
   NewCops: enable
@@ -106,6 +110,7 @@ claude
 ```
 
 Ask Claude:
+
 - "Lint app/models/user.rb"
 - "Check app/controllers for Rails violations"
 - "Auto-fix style issues in this file"
@@ -123,12 +128,14 @@ yarn build
 ## Common Issues
 
 **MCP server not connected?**
+
 ```bash
 claude mcp list
 # If missing, re-add with the command from step 3
 ```
 
 **RuboCop not found?**
+
 ```bash
 cd your-rails-project
 bundle install

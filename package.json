@@ -7,27 +7,63 @@
     "rubocop-mcp-server": "./build/index.js"
   },
   "files": [
-    "build"
+    "build",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsc",
-    "prepare": "yarn build",
+    "build:clean": "rm -rf build && yarn build",
+    "prepare": "husky",
     "watch": "tsc --watch",
-    "dev": "node --watch build/index.js"
+    "dev": "node --watch build/index.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit",
+    "validate": "yarn type-check && yarn lint && yarn format:check",
+    "precommit": "lint-staged"
   },
   "keywords": [
     "mcp",
     "rubocop",
     "rails",
-    "linting"
+    "linting",
+    "typescript",
+    "model-context-protocol"
   ],
   "author": "",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/rubocop-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/rubocop-mcp/issues"
+  },
+  "homepage": "https://github.com/yourusername/rubocop-mcp#readme",
+  "engines": {
+    "node": ">=20.17.0"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@types/node": "^22.10.5",
+    "@typescript-eslint/eslint-plugin": "^8.46.3",
+    "@typescript-eslint/parser": "^8.46.3",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-promise": "^7.2.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.6.2",
     "typescript": "^5.7.2"
   }
 }

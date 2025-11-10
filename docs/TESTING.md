@@ -28,6 +28,7 @@ Ask Claude in this conversation:
 > "Use the rubocop_lint tool to check test_example.rb for style violations"
 
 **Expected output**: Should find 7 offenses including:
+
 - Missing frozen string literal comment
 - `update_attributes` should be `update`
 - Missing spaces around operators
@@ -49,6 +50,7 @@ Ask Claude:
 > "Use rubocop_list_cops to show all Rails-specific cops"
 
 **Expected**: List of all Rails cops like:
+
 - Rails/ActiveRecordAliases
 - Rails/HasManyOrHasOneDependent
 - Rails/SkipsModelValidations
@@ -114,6 +116,7 @@ rubocop --show-cops Rails/ActiveRecordAliases
 ## Troubleshooting
 
 ### MCP server not connected
+
 ```bash
 # Rebuild the server
 yarn build
@@ -127,6 +130,7 @@ claude mcp add --transport stdio rubocop -- node /path/to/rubocop-mcp/build/inde
 ```
 
 ### RuboCop errors
+
 ```bash
 # Check RuboCop is installed
 which rubocop
