@@ -1,27 +1,54 @@
-# Example Configurations
+# Configuration Examples
 
-This directory contains example configuration files.
+Example configuration files for the RuboCop MCP server.
 
 ## Files
 
-- **claude-desktop-config.json** - Example MCP config for Claude Desktop
-- **rails-rubocop.yml** - Example RuboCop config for Rails projects
+### claude-desktop-config.json
 
-## Usage
+Example MCP server configuration for Claude Desktop.
 
-### For Claude Desktop
+**Usage:**
 
-Add the configuration to your Claude Desktop config file:
+1. Locate your Claude Desktop config file:
+   - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Linux:** `~/.config/Claude/claude_desktop_config.json`
+   - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
-**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-**Linux**: `~/.config/Claude/claude_desktop_config.json`
-**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+2. Add the `mcpServers` section from the example
+3. Update the path to your installation directory
+4. Restart Claude Desktop
 
-Copy the `mcpServers` section from `claude-desktop-config.json` and update the path to your installation directory.
+**Important:** Use absolute paths, not `~` shorthand.
 
-### For Claude Code (CLI)
+### rails-rubocop.yml
 
-Claude Code users should use the `claude mcp add` command instead:
+Comprehensive RuboCop configuration for Rails projects.
+
+**Usage:**
+
+```bash
+# Copy to your Rails project
+cp examples/rails-rubocop.yml /path/to/your/rails-project/.rubocop.yml
+
+# Customize for your needs
+vim /path/to/your/rails-project/.rubocop.yml
+```
+
+**Features:**
+
+- Rails-specific cops enabled
+- Sensible defaults for Rails projects
+- Common exclusions (migrations, schema, etc.)
+- Relaxed metrics for Rails patterns
+- Documentation cop disabled
+- Line length: 120 characters
+
+## For Different Environments
+
+### Claude CLI
+
+Use the `claude mcp add` command instead of config files:
 
 ```bash
 # Global installation
@@ -31,14 +58,77 @@ claude mcp add --transport stdio rubocop -- node ~/.local/share/mcp-servers/rubo
 claude mcp add --transport stdio rubocop --scope local -- node /path/to/rubocop-mcp/build/index.js
 ```
 
-See [DEPLOYMENT.md](../DEPLOYMENT.md) for complete setup instructions.
+See [Installation Guide](../docs/installation.md) for details.
 
-### For Rails Projects
+### Cursor
 
-Copy the example RuboCop config to your Rails project:
+Add to `~/.cursor/mcp_settings.json`:
 
-```bash
-cp examples/rails-rubocop.yml /path/to/your/rails-project/.rubocop.yml
+```json
+{
+  "mcpServers": {
+    "rubocop": {
+      "command": "node",
+      "args": ["/absolute/path/to/rubocop-mcp/build/index.js"]
+    }
+  }
+}
 ```
 
-Then customize it for your project's needs.
+**Important:** Use full absolute paths (expand `~`).
+
+## Customization
+
+### Basic Rails Setup
+
+```yaml
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.2
+
+plugins:
+  - rubocop-rails
+
+Rails:
+  Enabled: true
+```
+
+### With Additional Plugins
+
+```yaml
+plugins:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-performance
+
+Rails:
+  Enabled: true
+
+RSpec:
+  Enabled: true
+```
+
+### Gradual Adoption
+
+```yaml
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.2
+
+plugins:
+  - rubocop-rails
+```
+
+Generate `.rubocop_todo.yml` with:
+
+```
+Generate RuboCop todo configuration
+```
+
+## Additional Resources
+
+- [Configuration Guide](../docs/configuration.md) - Detailed configuration instructions
+- [RuboCop Documentation](https://docs.rubocop.org/rubocop/configuration.html)
+- [rubocop-rails Guide](https://docs.rubocop.org/rubocop-rails/)
