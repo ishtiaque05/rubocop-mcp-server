@@ -44,7 +44,7 @@
   },
   "homepage": "https://github.com/yourusername/rubocop-mcp#readme",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.17.0"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4"
