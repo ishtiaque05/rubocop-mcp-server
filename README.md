@@ -103,6 +103,27 @@ Add to your Claude Desktop config file:
 }
 ```
 
+Restart Claude Desktop after saving the configuration.
+
+### With Cursor
+
+Add to Cursor's MCP settings:
+
+```json
+{
+  "mcpServers": {
+    "rubocop": {
+      "command": "node",
+      "args": ["/absolute/path/to/rubocop-mcp/build/index.js"]
+    }
+  }
+}
+```
+
+**Important**: Use the full absolute path. The `~` shorthand may not work in Cursor, so expand it to your actual home directory (e.g., `/home/username/.local/share/mcp-servers/rubocop/build/index.js`).
+
+Restart Cursor after adding the configuration.
+
 See `examples/` directory for sample configurations.
 
 ## Example Usage with Claude
@@ -114,6 +135,8 @@ Once configured, you can ask Claude to:
 - "Show me details about the Rails/ActiveRecordAliases cop"
 - "Generate a RuboCop todo config for gradual adoption"
 - "Auto-fix all Style violations in this file"
+- "Enable RuboCop auto-lint" - Turn on automatic linting reminders
+- "Disable RuboCop auto-lint" - Turn off automatic linting reminders
 
 ## Development
 
@@ -145,6 +168,45 @@ node test/test-mcp.js
 rubocop test/test_example.rb
 ```
 
+## Auto-Lint Feature
+
+The MCP server includes an auto-lint mode that reminds Claude/Cursor to run RuboCop after modifying Ruby files.
+
+**Enable:**
+```
+Enable RuboCop auto-lint
+```
+
+**Enable with auto-correction:**
+```
+Enable RuboCop auto-lint with auto-correction
+```
+
+**Check status:**
+```
+What's the RuboCop auto-lint status?
+```
+
+**Disable:**
+```
+Disable RuboCop auto-lint
+```
+
+See [AUTO_LINT.md](AUTO_LINT.md) for detailed documentation.
+
+## Pagination Support
+
+The `rubocop_list_cops` tool supports pagination to handle large result sets efficiently. When listing cops by department, results are paginated with a default limit of 50 cops per page.
+
+**Example:**
+```
+List Rails RuboCop cops
+```
+
+Returns the first 50 cops and guidance for fetching more.
+
+See [PAGINATION_GUIDE.md](PAGINATION_GUIDE.md) for detailed usage.
+
 ## Tools Reference
 
 ### rubocop_lint
@@ -168,10 +230,27 @@ Runs RuboCop on specified files or directories.
 
 ### rubocop_list_cops
 
-Lists available RuboCop cops.
+Lists available RuboCop cops with pagination support.
 
 **Parameters:**
 - `department` (optional): Filter by department (Rails, Style, Lint, etc.)
+- `limit` (optional): Maximum number of cops to return (default: 50, max: 200)
+- `offset` (optional): Number of cops to skip for pagination (default: 0)
+
+**Examples:**
+```json
+// Get summary of all departments
+{}
+
+// Get first 50 Rails cops
+{"department": "Rails"}
+
+// Get next 50 Rails cops
+{"department": "Rails", "limit": 50, "offset": 50}
+
+// Get 100 Style cops at a time
+{"department": "Style", "limit": 100}
+```
 
 ### rubocop_show_cop
 
@@ -186,6 +265,28 @@ Generates .rubocop_todo.yml configuration file.
 
 **Parameters:**
 - `path` (optional): Directory path (default: current directory)
+
+### rubocop_set_auto_lint
+
+Enable or disable automatic linting reminders.
+
+**Parameters:**
+- `enabled` (required): `true` to enable, `false` to disable
+- `auto_correct` (optional): Whether to auto-fix issues when linting (default: false)
+
+**Example:**
+```json
+{
+  "enabled": true,
+  "auto_correct": true
+}
+```
+
+### rubocop_get_auto_lint_status
+
+Get the current auto-lint status and configuration.
+
+**Parameters:** None
 
 ## Using in Rails Projects
 
