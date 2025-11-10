@@ -88,18 +88,18 @@ const TOOLS: Tool[] = [
   {
     name: "rubocop_list_cops",
     description:
-      "List all available RuboCop cops (including Rails-specific cops) with their descriptions. Optionally filter by department (e.g., 'Rails', 'Style', 'Lint'). Supports pagination for large results.",
+      "List RuboCop cops by department. Without department parameter, returns a summary of all departments. With department parameter (e.g., 'Style', 'Lint'), returns cops for that specific department with pagination support.",
     inputSchema: {
       type: "object",
       properties: {
         department: {
           type: "string",
           description:
-            "Filter cops by department (e.g., 'Rails', 'Style', 'Lint', 'Metrics')",
+            "Filter cops by department (e.g., 'Style', 'Lint', 'Layout', 'Metrics', 'Naming', 'Security'). Omit to see department summary.",
         },
         limit: {
           type: "number",
-          description: "Maximum number of cops to return (default: 50, max: 200)",
+          description: "Maximum number of cops to return (default: 50, max: 100)",
           default: 50,
         },
         offset: {
@@ -212,48 +212,47 @@ function formatOffenses(result: RubocopResult): string {
   return output;
 }
 
-function formatCopList(stdout: string, department?: string, limit: number = 50, offset: number = 0): string {
-  const lines = stdout.trim().split("\n").filter(line => line.trim());
-  const filter = department ? department.toLowerCase() : null;
+function formatCopList(stdout: string, department: string, limit: number = 50, offset: number = 0): string {
+  // Parse cop names from RuboCop output for the specified department
+  // RuboCop output format has department headers like: "# Department 'Style' (281):"
+  // followed by cop definitions like: "Style/AccessModifierDeclarations:"
 
-  // If no department filter, provide summary instead of full list
-  if (!filter) {
-    const departments = new Map<string, number>();
-
-    for (const line of lines) {
-      const dept = line.split("/")[0];
-      departments.set(dept, (departments.get(dept) || 0) + 1);
-    }
-
-    let output = `RuboCop has ${lines.length} total cops across ${departments.size} departments:\n\n`;
-
-    for (const [dept, count] of Array.from(departments.entries()).sort()) {
-      output += `• ${dept}: ${count} cops\n`;
-    }
-
-    output += `\n💡 To see cops for a specific department, use the 'department' parameter.\n`;
-    output += `   Example departments: Rails, Style, Lint, Layout, Metrics, Naming, etc.\n`;
-
-    return output;
-  }
-
-  // With department filter, collect matching cops
+  const lines = stdout.split("\n");
   const matchingCops: string[] = [];
+  let inTargetDepartment = false;
+  const deptPrefix = department + "/";
+
   for (const line of lines) {
-    const copDept = line.split("/")[0];
-    if (copDept.toLowerCase() === filter) {
-      matchingCops.push(line);
+    // Check if we're entering the target department
+    const deptMatch = line.match(/^# Department '([^']+)'/);
+    if (deptMatch) {
+      inTargetDepartment = deptMatch[1] === department;
+      continue;
+    }
+
+    // If we're in a different department's header, skip
+    if (line.startsWith("# Department '") && !inTargetDepartment) {
+      inTargetDepartment = false;
+      continue;
+    }
+
+    // Extract cop names for the target department
+    if (line.startsWith(deptPrefix)) {
+      const copMatch = line.match(/^([A-Z][a-zA-Z]+\/[A-Za-z0-9]+):/);
+      if (copMatch) {
+        matchingCops.push(copMatch[1]);
+      }
     }
   }
 
   const totalCops = matchingCops.length;
 
   if (totalCops === 0) {
-    return `No cops found for department: ${department}\n`;
+    return `No cops found for department: ${department}\n\nAvailable departments can be seen by calling rubocop_list_cops without a department parameter.`;
   }
 
-  // Apply pagination
-  const maxLimit = Math.min(limit, 200); // Cap at 200
+  // Apply pagination with conservative limits
+  const maxLimit = Math.min(limit, 100);
   const paginatedCops = matchingCops.slice(offset, offset + maxLimit);
   const hasMore = offset + maxLimit < totalCops;
 
@@ -355,13 +354,46 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           offset?: number;
         };
 
-        // Always get all cops - we filter in formatCopList
-        const rubocopArgs = [
-          "--show-cops",
-        ];
-
+        const rubocopArgs = ["--show-cops"];
         const { stdout } = await runRubocop(rubocopArgs);
 
+        // If no department specified, return summary only
+        if (!department) {
+          // Extract just department info from header to avoid processing all cops
+          const lines = stdout.split("\n");
+          const departments = new Map<string, number>();
+          let totalCops = 0;
+
+          // Parse department headers only (format: "# Department 'Name' (count):")
+          for (const line of lines) {
+            const deptMatch = line.match(/^# Department '([^']+)' \((\d+)\):/);
+            if (deptMatch) {
+              const [, deptName, count] = deptMatch;
+              departments.set(deptName, parseInt(count, 10));
+              totalCops += parseInt(count, 10);
+            }
+          }
+
+          let output = `RuboCop has ${totalCops} total cops across ${departments.size} departments:\n\n`;
+
+          for (const [dept, count] of Array.from(departments.entries()).sort()) {
+            output += `• ${dept}: ${count} cops\n`;
+          }
+
+          output += `\n💡 To see cops for a specific department, use the 'department' parameter.\n`;
+          output += `   Example: { "department": "Style" }\n`;
+
+          return {
+            content: [
+              {
+                type: "text",
+                text: output,
+              },
+            ],
+          };
+        }
+
+        // With department filter, extract cops for that department
         return {
           content: [
             {
