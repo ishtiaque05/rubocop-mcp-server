@@ -5,6 +5,7 @@ The RuboCop MCP server includes an auto-lint feature that helps remind Claude or
 ## How It Works
 
 When auto-lint is enabled, the MCP server will:
+
 1. Track the auto-lint state for your session
 2. Provide helpful reminders to run RuboCop when issues are found
 3. Optionally apply auto-corrections automatically
@@ -89,10 +90,12 @@ Let me run RuboCop to check for any style issues...
 Enable or disable automatic linting mode.
 
 **Parameters:**
+
 - `enabled` (required): `true` to enable, `false` to disable
 - `auto_correct` (optional): `true` to auto-fix issues, default `false`
 
 **Example:**
+
 ```json
 {
   "enabled": true,
@@ -107,6 +110,7 @@ Get the current auto-lint configuration.
 **Parameters:** None
 
 **Returns:**
+
 ```
 Auto-lint Status:
 
@@ -119,6 +123,7 @@ Auto-lint Status:
 ## How This Differs From Hooks
 
 ### Auto-Lint (This Feature)
+
 - Works at the MCP tool level
 - Provides reminders to the AI assistant
 - The AI decides when to lint
@@ -126,6 +131,7 @@ Auto-lint Status:
 - Toggleable per session
 
 ### Claude Code Hooks
+
 - Works at the IDE/CLI level
 - Automatically executes after file changes
 - Happens regardless of AI involvement
@@ -133,6 +139,7 @@ Auto-lint Status:
 - Configured in settings files
 
 ### Pre-commit Hooks
+
 - Works at the git level
 - Runs before commits
 - Happens outside of AI context
@@ -142,16 +149,19 @@ Auto-lint Status:
 ## Best Practices
 
 1. **Enable auto-lint at the start of your session:**
+
    ```
    Enable RuboCop auto-lint
    ```
 
 2. **Use auto-correction for quick fixes:**
+
    ```
    Enable RuboCop auto-lint with auto-correction
    ```
 
 3. **Disable when working on experimental code:**
+
    ```
    Disable RuboCop auto-lint
    ```
@@ -164,15 +174,18 @@ Auto-lint Status:
 ## Troubleshooting
 
 **Auto-lint seems disabled?**
+
 - Check the status: ask "What's the RuboCop auto-lint status?"
 - Re-enable if needed: "Enable RuboCop auto-lint"
 
 **AI not running RuboCop automatically?**
-- Auto-lint provides *reminders*, not forced execution
+
+- Auto-lint provides _reminders_, not forced execution
 - The AI assistant decides when to run based on context
 - You can always explicitly ask: "Run RuboCop on this file"
 
 **Want forced auto-execution?**
+
 - Use Claude Code hooks (for Claude CLI)
 - Use pre-commit hooks (for git integration)
 - See the main README for setup instructions

@@ -1,0 +1,12 @@
+node_modules
+build
+dist
+coverage
+*.log
+.env
+.env.local
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+*.min.js
+*.min.css

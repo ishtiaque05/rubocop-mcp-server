@@ -16,12 +16,14 @@ The MCP server itself is a Node.js/TypeScript project.
 ## Running Tests
 
 ### Test the MCP server directly
+
 ```bash
 # From project root
 node test/test-mcp.js
 ```
 
 ### Test with RuboCop CLI
+
 ```bash
 # From project root
 rubocop test/test_example.rb
@@ -32,7 +34,9 @@ rubocop test_example.rb
 ```
 
 ### Test via Claude Code
+
 Ask Claude to lint the test file:
+
 ```
 Use rubocop_lint to check test/test_example.rb
 ```

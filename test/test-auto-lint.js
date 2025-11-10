@@ -15,7 +15,7 @@ const serverPath = join(__dirname, '..', 'build', 'index.js');
 console.log('Testing RuboCop MCP Auto-Lint Feature...\n');
 
 const server = spawn('node', [serverPath], {
-  stdio: ['pipe', 'pipe', 'inherit']
+  stdio: ['pipe', 'pipe', 'inherit'],
 });
 
 let buffer = '';
@@ -33,7 +33,7 @@ server.stdout.on('data', (data) => {
     try {
       const message = JSON.parse(line);
       console.log('Server response:', JSON.stringify(message, null, 2));
-    } catch (e) {
+    } catch (_e) {
       console.log('Non-JSON output:', line);
     }
   }
@@ -44,7 +44,7 @@ function sendRequest(method, params) {
     jsonrpc: '2.0',
     id: messageId++,
     method,
-    params
+    params,
   };
 
   console.log('\nSending request:', JSON.stringify(request, null, 2));
@@ -59,8 +59,8 @@ setTimeout(() => {
     capabilities: {},
     clientInfo: {
       name: 'test-client',
-      version: '1.0.0'
-    }
+      version: '1.0.0',
+    },
   });
 
   setTimeout(() => {
@@ -73,7 +73,7 @@ setTimeout(() => {
       console.log('\n=== Test 1: Get Initial Auto-Lint Status ===');
       sendRequest('tools/call', {
         name: 'rubocop_get_auto_lint_status',
-        arguments: {}
+        arguments: {},
       });
 
       setTimeout(() => {
@@ -82,8 +82,8 @@ setTimeout(() => {
         sendRequest('tools/call', {
           name: 'rubocop_set_auto_lint',
           arguments: {
-            enabled: true
-          }
+            enabled: true,
+          },
         });
 
         setTimeout(() => {
@@ -91,7 +91,7 @@ setTimeout(() => {
           console.log('\n=== Test 3: Get Status After Enabling ===');
           sendRequest('tools/call', {
             name: 'rubocop_get_auto_lint_status',
-            arguments: {}
+            arguments: {},
           });
 
           setTimeout(() => {
@@ -101,8 +101,8 @@ setTimeout(() => {
               name: 'rubocop_set_auto_lint',
               arguments: {
                 enabled: true,
-                auto_correct: true
-              }
+                auto_correct: true,
+              },
             });
 
             setTimeout(() => {
@@ -110,7 +110,7 @@ setTimeout(() => {
               console.log('\n=== Test 5: Get Status with Auto-Correction ===');
               sendRequest('tools/call', {
                 name: 'rubocop_get_auto_lint_status',
-                arguments: {}
+                arguments: {},
               });
 
               setTimeout(() => {
@@ -119,8 +119,8 @@ setTimeout(() => {
                 sendRequest('tools/call', {
                   name: 'rubocop_set_auto_lint',
                   arguments: {
-                    enabled: false
-                  }
+                    enabled: false,
+                  },
                 });
 
                 setTimeout(() => {
@@ -128,7 +128,7 @@ setTimeout(() => {
                   console.log('\n=== Test 7: Final Status Check ===');
                   sendRequest('tools/call', {
                     name: 'rubocop_get_auto_lint_status',
-                    arguments: {}
+                    arguments: {},
                   });
 
                   setTimeout(() => {

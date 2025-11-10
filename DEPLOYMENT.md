@@ -72,6 +72,7 @@ claude mcp add --transport stdio rubocop -- node ~/.local/share/mcp-servers/rubo
 ```
 
 Verify it's connected:
+
 ```bash
 claude mcp list
 ```
@@ -115,31 +116,37 @@ Auto-fix style issues in app/services/user_service.rb
 ### Example Commands
 
 **Lint a single file:**
+
 ```
 Use rubocop_lint to check app/models/user.rb
 ```
 
 **Lint with auto-fix:**
+
 ```
 Use rubocop_lint with auto_correct=true on app/controllers/users_controller.rb
 ```
 
 **Lint only Rails cops:**
+
 ```
 Use rubocop_lint on app/models with only='Rails'
 ```
 
 **List all Rails cops:**
+
 ```
 Use rubocop_list_cops with department='Rails'
 ```
 
 **Check specific cop details:**
+
 ```
 Use rubocop_show_cop for Rails/HasManyOrHasOneDependent
 ```
 
 **Generate .rubocop_todo.yml:**
+
 ```
 Use rubocop_auto_gen_config for gradual RuboCop adoption
 ```
@@ -180,7 +187,7 @@ cp ~/.local/share/mcp-servers/rubocop/examples/rails-rubocop.yml .rubocop.yml
 ```yaml
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 3.2  # Match your Ruby version
+  TargetRubyVersion: 3.2 # Match your Ruby version
   Exclude:
     - 'db/schema.rb'
     - 'db/migrate/*'
@@ -194,7 +201,7 @@ plugins:
 
 # Add any custom configurations here
 Style/Documentation:
-  Enabled: false  # Example: disable class documentation requirement
+  Enabled: false # Example: disable class documentation requirement
 
 Rails:
   Enabled: true
@@ -227,11 +234,13 @@ yarn build
 ### MCP Server Not Connected
 
 Check status:
+
 ```bash
 claude mcp list
 ```
 
 If not showing, re-add:
+
 ```bash
 # For global
 claude mcp add --transport stdio rubocop -- node ~/.local/share/mcp-servers/rubocop/build/index.js
@@ -243,6 +252,7 @@ claude mcp add --transport stdio rubocop --scope local -- node .mcp/rubocop/buil
 ### RuboCop Not Found
 
 Make sure RuboCop is installed in your Rails project:
+
 ```bash
 bundle exec rubocop --version
 ```
@@ -254,6 +264,7 @@ If not installed, add to Gemfile and run `bundle install`.
 The MCP server needs to run in your project directory to find `.rubocop.yml` and `Gemfile`.
 
 Make sure you're running Claude CLI from your Rails project root:
+
 ```bash
 cd /path/to/rails/project
 claude
@@ -313,21 +324,25 @@ claude
 ### Common Workflows
 
 **1. Before committing:**
+
 ```
 Lint all files I changed with RuboCop and auto-fix what you can
 ```
 
 **2. Working on a specific file:**
+
 ```
 Check app/models/user.rb for any Rails-specific issues
 ```
 
 **3. Refactoring:**
+
 ```
 Run RuboCop on app/services/ and show me the most critical issues
 ```
 
 **4. Code review:**
+
 ```
 Lint this controller and explain any violations
 ```
@@ -335,6 +350,7 @@ Lint this controller and explain any violations
 ### Integration with Git Hooks
 
 You can also run RuboCop in git hooks, but Claude with the MCP server is great for:
+
 - Interactive feedback
 - Explaining why violations matter
 - Suggesting fixes in context

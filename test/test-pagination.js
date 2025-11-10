@@ -15,7 +15,7 @@ const serverPath = join(__dirname, '..', 'build', 'index.js');
 console.log('Testing RuboCop MCP Pagination Feature...\n');
 
 const server = spawn('node', [serverPath], {
-  stdio: ['pipe', 'pipe', 'inherit']
+  stdio: ['pipe', 'pipe', 'inherit'],
 });
 
 let buffer = '';
@@ -35,7 +35,7 @@ server.stdout.on('data', (data) => {
       if (message.result && message.result.content) {
         console.log('\n' + message.result.content[0].text);
       }
-    } catch (e) {
+    } catch (_e) {
       // Ignore non-JSON
     }
   }
@@ -46,7 +46,7 @@ function sendRequest(method, params) {
     jsonrpc: '2.0',
     id: messageId++,
     method,
-    params
+    params,
   };
 
   server.stdin.write(JSON.stringify(request) + '\n');
@@ -60,15 +60,15 @@ setTimeout(() => {
     capabilities: {},
     clientInfo: {
       name: 'test-client',
-      version: '1.0.0'
-    }
+      version: '1.0.0',
+    },
   });
 
   setTimeout(() => {
     console.log('=== Test 1: Get Department Summary ===');
     sendRequest('tools/call', {
       name: 'rubocop_list_cops',
-      arguments: {}
+      arguments: {},
     });
 
     setTimeout(() => {
@@ -78,8 +78,8 @@ setTimeout(() => {
         arguments: {
           department: 'Rails',
           limit: 10,
-          offset: 0
-        }
+          offset: 0,
+        },
       });
 
       setTimeout(() => {
@@ -89,8 +89,8 @@ setTimeout(() => {
           arguments: {
             department: 'Rails',
             limit: 10,
-            offset: 10
-          }
+            offset: 10,
+          },
         });
 
         setTimeout(() => {
@@ -100,8 +100,8 @@ setTimeout(() => {
             arguments: {
               department: 'Style',
               limit: 20,
-              offset: 0
-            }
+              offset: 0,
+            },
           });
 
           setTimeout(() => {
