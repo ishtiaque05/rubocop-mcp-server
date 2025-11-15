@@ -1,13 +1,4 @@
 /**
- * Type definitions for RuboCop MCP Server
- *
- * Centralizing types promotes:
- * - Reusability across modules
- * - Single source of truth for data structures
- * - Better IDE autocomplete and type checking
- */
-
-/**
  * Represents a single offense found by RuboCop
  */
 export interface RubocopOffense {
