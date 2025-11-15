@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "description": "MCP server for RuboCop Rails linting",
   "type": "module",
-  "bin": {
-    "rubocop-mcp-server": "./build/index.js"
-  },
+  "bin": "./build/index.js",
   "files": [
     "build",
     "README.md",
@@ -65,5 +63,6 @@
     "lint-staged": "^16.2.6",
     "prettier": "^3.6.2",
     "typescript": "^5.7.2"
-  }
+  },
+  "packageManager": "yarn@4.11.0"
 }
