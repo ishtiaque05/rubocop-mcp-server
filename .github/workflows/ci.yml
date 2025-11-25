@@ -39,6 +39,9 @@ jobs:
       - name: Check code formatting
         run: yarn format:check
 
+      - name: Run tests
+        run: yarn test
+
       - name: Build project
         run: yarn build
 

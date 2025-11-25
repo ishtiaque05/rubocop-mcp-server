@@ -177,7 +177,8 @@ If hooks fail, fix the issues before committing.
 node test/test-mcp.js
 
 # Test with RuboCop
-rubocop test/test_example.rb
+rubocop test/style_violations.rb
+rubocop test/sample_gem/
 
 # Test with Claude
 claude mcp add --transport stdio rubocop-dev -- node $(pwd)/build/index.js

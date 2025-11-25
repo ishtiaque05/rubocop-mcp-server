@@ -15,7 +15,7 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        project: './tsconfig.json',
+        project: ['./tsconfig.json', './tsconfig.test.json'],
       },
       globals: {
         console: 'readonly',
@@ -24,6 +24,7 @@ export default [
         __filename: 'readonly',
         Buffer: 'readonly',
         NodeJS: 'readonly',
+        global: 'writable',
       },
     },
     plugins: {
