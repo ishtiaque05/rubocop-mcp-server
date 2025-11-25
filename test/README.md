@@ -4,8 +4,20 @@ Test files and scripts for the RuboCop MCP server.
 
 ## Files
 
-- **test_example.rb** - Sample Ruby file with intentional violations for testing
+### Ruby Test Fixtures
+
+- **style_violations.rb** - Style violations (string concatenation, spacing, conditionals, etc.)
+- **rails_violations.rb** - Rails-specific violations (deprecated methods, anti-patterns)
+- **test_example.rb** - Legacy sample file with mixed violations
+
+### Test Scripts
+
 - **test-mcp.js** - Direct MCP server test script
+- **test-auto-lint.js** - Auto-lint functionality test
+- **test-pagination.js** - Pagination test for cop listings
+
+### Configuration
+
 - **.rubocop.yml** - RuboCop configuration for test fixtures
 
 ## Purpose
@@ -24,10 +36,11 @@ node test/test-mcp.js
 
 ```bash
 # From project root
-rubocop test/test_example.rb
+rubocop test/style_violations.rb
+rubocop test/rails_violations.rb
 
 # With JSON output
-rubocop --format json test/test_example.rb
+rubocop --format json test/style_violations.rb
 ```
 
 ### Via AI Assistant
@@ -35,33 +48,40 @@ rubocop --format json test/test_example.rb
 Ask your AI assistant:
 
 ```
-Use rubocop_lint to check test/test_example.rb
+Use rubocop_lint to check test/style_violations.rb
+Use rubocop_lint to check test/rails_violations.rb
 ```
 
 ## Expected Results
 
-The test file contains intentional violations:
+**style_violations.rb** contains:
 
-- Missing frozen string literal comment
-- Deprecated `update_attributes` method
+- String concatenation with `+`
 - Missing spaces around operators
-- Useless variable assignments
-- String literal style issues
+- Redundant `return` statements
+- Using `or`/`and` instead of `||`/`&&`
+- CamelCase method names
+- `for` loops instead of `each`
 
-You should see approximately 7 offenses when linting this file.
+**rails_violations.rb** contains:
+
+- Deprecated `update_attributes` method
+- Using `select.first` instead of `find`
+- Rails-specific anti-patterns
 
 ## Test Scenarios
 
 **Auto-correction:**
 
 ```
-Use rubocop_lint with auto_correct=true on test/test_example.rb
+Use rubocop_lint with auto_correct=true on test/style_violations.rb
 ```
 
 **Specific cops:**
 
 ```
-Use rubocop_lint on test/test_example.rb with only='Style'
+Use rubocop_lint on test/style_violations.rb with only='Style'
+Use rubocop_lint on test/rails_violations.rb with only='Rails'
 ```
 
 **List cops:**
