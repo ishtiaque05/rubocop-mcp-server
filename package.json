@@ -71,5 +71,8 @@
     "typescript": "^5.7.2",
     "vitest": "^4.0.9"
   },
-  "packageManager": "yarn@4.11.0"
+  "packageManager": "yarn@4.11.0",
+  "resolutions": {
+    "glob": "^11.1.0"
+  }
 }
