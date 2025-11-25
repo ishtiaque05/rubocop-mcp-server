@@ -93,11 +93,15 @@ node test/test-mcp.js
 **Test with RuboCop CLI:**
 
 ```bash
-# Lint the test file
-rubocop test/test_example.rb
+# Lint the test files
+rubocop test/style_violations.rb
+rubocop test/rails_violations.rb
 
 # With JSON output
-rubocop --format json test/test_example.rb
+rubocop --format json test/style_violations.rb
+
+# Test on sample gem
+rubocop test/sample_gem/
 ```
 
 **Test with Claude CLI:**
@@ -113,14 +117,31 @@ claude
 Then ask Claude:
 
 ```
-Use rubocop_lint to check test/test_example.rb
+Use rubocop_lint to check test/style_violations.rb
+Use rubocop_lint to check test/rails_violations.rb
+Use rubocop_lint to check test/sample_gem/
 ```
 
 ### Test Files
 
-- `test/test_example.rb` - Ruby file with intentional violations
-- `test/.rubocop.yml` - RuboCop config for test files
+**Ruby Test Fixtures:**
+
+- `test/style_violations.rb` - Style violations (string concatenation, spacing, conditionals, etc.)
+- `test/rails_violations.rb` - Rails-specific violations (deprecated methods, anti-patterns)
+- `test/test_example.rb` - Legacy sample file with mixed violations
+- `test/sample_gem/` - Complete gem structure for comprehensive testing
+
+**Test Scripts:**
+
 - `test/test-mcp.js` - Direct MCP server test script
+- `test/test-auto-lint.js` - Auto-lint functionality test
+- `test/test-pagination.js` - Pagination test for cop listings
+
+**Configuration:**
+
+- `test/.rubocop.yml` - RuboCop configuration for test fixtures
+
+See [test/README.md](../test/README.md) for detailed testing documentation.
 
 ## Project Structure
 
