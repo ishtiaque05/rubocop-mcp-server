@@ -3,7 +3,7 @@
  * Tests type guards and handler structure
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { isValidToolName, toolHandlers } from '../../handlers/tool.handlers.js';
 
